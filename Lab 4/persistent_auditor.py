@@ -1,4 +1,4 @@
-order_file = 'orders.txt'
+order_file = 'Lab 4/orders.txt'
 
 def load_inventory():
     history = []
@@ -54,6 +54,8 @@ def get_valid_input(history):
             save_inventory(history)
             print("\nOrder successfully saved to", order_file)
             break
+        elif product_name.lower() == "":
+            continue
 
         quantity = input("Enter Quantity: ")
         if not quantity.isdigit():
