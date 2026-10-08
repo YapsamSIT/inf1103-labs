@@ -1,9 +1,7 @@
-FROM python:3.12-slim
+FROM python:3.11-slim
 
 WORKDIR /app
-COPY dataM_.py .
 
-ENV INVENTORY_FILE=/data/inventory.json
-RUN mkdir -p /data
+COPY dataM_.py .
 
 CMD ["python", "dataM_.py"]
