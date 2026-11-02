@@ -1,6 +1,4 @@
-class Inventory:
-    """Manages a collection of Product objects."""
- 
+class Inventory: 
     def __init__(self):
         self.__products = []
  
@@ -10,7 +8,6 @@ class Inventory:
         self.__products.append(product)
  
     def search_product(self, product_id):
-        """Return the matching Product, or None if not found."""
         for product in self.__products:
             if product.get_product_id() == product_id:
                 return product
@@ -30,5 +27,4 @@ class Inventory:
             product.display_information()
  
     def get_products(self):
-        """Returns a copy of the list so outside code can't alter the original."""
         return list(self.__products)
