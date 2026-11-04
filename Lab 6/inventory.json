@@ -4,5 +4,11 @@
         "name": "meep",
         "price": 21.0,
         "stock": 111
+    },
+    {
+        "product_id": "1002",
+        "name": "Meow",
+        "price": 67.0,
+        "stock": 25
     }
 ]

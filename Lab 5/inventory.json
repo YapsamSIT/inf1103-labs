@@ -4,5 +4,11 @@
         "name": "mEEP",
         "price": 67.0,
         "stock": 10
+    },
+    {
+        "id": "",
+        "name": "",
+        "price": 1.0,
+        "stock": 12
     }
 ]
