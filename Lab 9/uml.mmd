@@ -1,0 +1,141 @@
+classDiagram
+    direction TB
+
+    class Supplier {
+        +supplier_id: str
+        +name: str
+        +contact_email: str
+        +display_information(): None
+    }
+
+    class Product {
+        <<abstract>>
+        #_product_id: str
+        #_name: str
+        #_price: float
+        #_stock_quantity: int
+        +supplier: Supplier
+        +product_id(): str
+        +name(): str
+        +price(): float
+        +price(value: float): None
+        +stock_quantity(): int
+        +stock_quantity(value: int): None
+        +update_stock(change: int): None
+        +display_information(): None
+        +to_dict(): dict
+        +get_fulfilment_info()*: str
+    }
+
+    class CanBeShipped {
+        <<interface>>
+        +calculate_shipping_cost()*: float
+    }
+
+    class PhysicalProduct {
+        -BASE_SHIPPING: float
+        -COST_PER_KG: float
+        -_weight: float
+        +weight(): float
+        +display_information(): None
+        +get_fulfilment_info(): str
+        +calculate_shipping_cost(): float
+        +to_dict(): dict
+        +from_dict(data: dict, supplier: Supplier)$: PhysicalProduct
+    }
+
+    class DigitalProduct {
+        -_download_size: float
+        +download_size(): float
+        +display_information(): None
+        +get_fulfilment_info(): str
+        +to_dict(): dict
+        +from_dict(data: dict, supplier: Supplier)$: DigitalProduct
+    }
+
+    class ProductFactory {
+        +create(product_type: str, product_id: str, name: str, price: float, stock_quantity: int, supplier: Supplier, ...)$: Product
+    }
+
+    class Inventory {
+        +name: str
+        +products: list[Product]
+        +add_product(product: Product): None
+        +remove_product(product_id: str): Product | None
+        +find_product(product_id: str): Product | None
+        +display_all_products(): None
+        +update_stock(product_id: str, change: int): None
+        +search(term: str): list[Product]
+    }
+
+    class OrderLine {
+        +product: Product
+        +quantity: int
+        +calculate_subtotal(): float
+        +display_information(): None
+    }
+
+    class DiscountStrategy {
+        <<abstract>>
+        +apply(total: float)*: float
+    }
+
+    class NoDiscount {
+        +apply(total: float): float
+    }
+
+    class PercentageDiscount {
+        +percentage: float
+        +apply(total: float): float
+    }
+
+    class BulkDiscount {
+        +threshold: float
+        +amount: float
+        +apply(total: float): float
+    }
+
+    class StudentDiscount {
+        +percentage: float
+        +apply(total: float): float
+    }
+
+    class Order {
+        +order_id: str
+        +order_lines: list[OrderLine]
+        +discount: DiscountStrategy
+        +set_discount(discount: DiscountStrategy): None
+        +add_order_line(product: Product, quantity: int): None
+        +remove_order_line(product_id: str): bool
+        +calculate_subtotal_before_discount(): float
+        +calculate_total(): float
+        +display_order_summary(): None
+    }
+
+    %% Inheritance relationships
+    Product <|-- PhysicalProduct : inherits
+    Product <|-- DigitalProduct : inherits
+    CanBeShipped <|.. PhysicalProduct : implements
+
+    DiscountStrategy <|-- NoDiscount : inherits
+    DiscountStrategy <|-- PercentageDiscount : inherits
+    DiscountStrategy <|-- BulkDiscount : inherits
+    DiscountStrategy <|-- StudentDiscount : inherits
+
+    %% Association: Supplier and Product
+    Supplier "1" -- "0..*" Product : supplies
+
+    %% Aggregation: Inventory and Product
+    Inventory "0..1" o-- "0..*" Product : contains
+
+    %% Composition: Order and OrderLine
+    Order "1" *-- "0..*" OrderLine : owns
+
+    %% Association: OrderLine references Product
+    OrderLine "0..*" -- "1" Product : references
+
+    %% Association / Strategy: Order uses DiscountStrategy
+    Order "0..*" -- "1" DiscountStrategy : applies
+
+    %% Dependency: Factory creates Product
+    ProductFactory ..> Product : «creates»
