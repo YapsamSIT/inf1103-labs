@@ -3,7 +3,7 @@
         "product_id": "1001",
         "name": "meep",
         "price": 21.0,
-        "stock_quantity": 20,
+        "stock_quantity": 40,
         "type": "physical",
         "weight": 20.0
     },
@@ -14,5 +14,21 @@
         "stock_quantity": 90,
         "type": "digital",
         "download_size": 211.0
+    },
+    {
+        "product_id": "1003",
+        "name": "Maap",
+        "price": 2211.0,
+        "stock_quantity": 111,
+        "type": "physical",
+        "weight": 12.0
+    },
+    {
+        "product_id": "1004",
+        "name": "Io",
+        "price": 20202.0,
+        "stock_quantity": 111,
+        "type": "digital",
+        "download_size": 10101.0
     }
 ]
